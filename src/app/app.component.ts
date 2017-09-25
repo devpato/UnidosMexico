@@ -11,8 +11,11 @@ import * as firebase from 'firebase/app';
 export class AppComponent implements OnInit {
   user = null;
   locations: FirebaseListObservable<any[]>;
+  users:  FirebaseListObservable<any[]>;
   title="Unidos Mexico"
   tempLocations : any
+  userUid : string
+  tempUser : any 
   constructor(
     private auth: AuthService,
     public db: AngularFireDatabase,
@@ -25,7 +28,10 @@ export class AppComponent implements OnInit {
   isLoggedIn() {
     return this.auth.isLoggedIn();
   }
-
+ 
+  userUID(){
+    return this.auth.userUID();
+  }
   logout() {
     this.auth.logout();
   }
@@ -34,15 +40,16 @@ export class AppComponent implements OnInit {
       (user) =>{this.user = user}   
     );
     this.locations = this.locationDB.get(); 
-    
   }
 
   add(tempName: string, tempAddress: string,tempCity: string, tempState: string) {
-      this.tempLocations = {
+    this.userUid = this.auth.userUID();
+    this.tempLocations = {
         name: tempName,
         address: tempAddress,
         city: tempCity,
-        state: tempState
+        state: tempState,
+        uid: this.userUid
       }
       console.log(this.tempLocations);
       this.locations.push(this.tempLocations);

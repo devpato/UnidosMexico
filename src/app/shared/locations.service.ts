@@ -6,6 +6,6 @@ export class LocationsService {
 
   constructor(private db: AngularFireDatabase) {}
   get (): FirebaseListObservable<any[]>{
-    return this.db.list('/locations/locations');
+    return this.db.list('/locations');
   }
 }

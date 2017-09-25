@@ -1,20 +1,57 @@
-<!--The content below is only a placeholder and can be replaced.-->
-
-
+<nav class="navbar navbar-expand-lg bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">UNIDOS MEXICO</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">INICIO
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">MAPA</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">WIFI</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">BUSCAME</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">DONACIONES</a>
+          </li>
+          <li>
+          </li>
+          <li *ngIf="!isLoggedIn()" class="nav-item">
+              <a class="nav-link" href="#"  (click)="loginWithGoogle()">INICIAR SESION</a>
+          </li>
+          <li *ngIf="isLoggedIn()" class="nav-item">
+              <a class="nav-link" href="#" (click)="logout()">CERRAR SESSION</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 <div *ngIf="user?.uid;else loginBox">
   <div style="text-align:center">
     <h1>
       Welcome to {{user.displayName}}
     </h1> 
   </div>
-  <button (click)="logout()">Logout</button>
+  <button class="btn btn-info" (click)="logout()">Logout</button>
 </div>
 
 <div *ngIf="isLoggedIn()">
   <ul>
     <label><b>Locations</b></label>
     <li class="text" *ngFor="let location of locations | async; let i = index">
-        Nombre del Albergue: {{location.name}} | Direccion: {{location.address}} |  Ciudad: {{location.city}} | Estado: {{location.state}} | <p (click)="remove(location)">[X]</p>
+        Nombre del Albergue: {{location.name}} | Direccion: {{location.address}} |  Ciudad: {{location.city}} | Estado: {{location.state}}
+        <div *ngIf="userUID() == location.uid" #userUid>
+          <p (click)="remove(location)">[X]</p>
+        </div>
     </li>
   </ul>
   <h3>Add new Locations:</h3>
@@ -22,12 +59,12 @@
   Direccion: <input type="text" #address/>
   Ciudad: <input type="text"  #city/>
   Estado: <input type="text"  #state/>
-  <input type="button" (click)="add(name.value,address.value,city.value,state.value)" value="Agregar"/>
+  <input type="button" class="btn btn-primary" (click)="add(name.value,address.value,city.value,state.value)" value="Agregar"/>
 </div>
 
-<ng-template #loginBox>
+<!--<ng-template #loginBox>
   <div>
     <h1>Login to {{title}}</h1>
   </div>
   <button (click)="loginWithGoogle()">Login with Google</button>
-</ng-template> 
+</ng-template> -->
