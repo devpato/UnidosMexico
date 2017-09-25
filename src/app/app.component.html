@@ -14,9 +14,15 @@
   <ul>
     <label><b>Locations</b></label>
     <li class="text" *ngFor="let location of locations | async; let i = index">
-        Nombre del Albergue: {{location.name}} | Direccion: {{location.address}} |  Ciudad: {{location.city}} | Estado: {{location.state}}
+        Nombre del Albergue: {{location.name}} | Direccion: {{location.address}} |  Ciudad: {{location.city}} | Estado: {{location.state}} | <p (click)="remove(location)">[X]</p>
     </li>
   </ul>
+  <h3>Add new Locations:</h3>
+  Nombre de albergue: <input type="text" #name/>
+  Direccion: <input type="text" #address/>
+  Ciudad: <input type="text"  #city/>
+  Estado: <input type="text"  #state/>
+  <input type="button" (click)="add(name.value,address.value,city.value,state.value)" value="Agregar"/>
 </div>
 
 <ng-template #loginBox>

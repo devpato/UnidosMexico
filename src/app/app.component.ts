@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   user = null;
   locations: FirebaseListObservable<any[]>;
   title="Unidos Mexico"
-
+  tempLocations : any
   constructor(
     private auth: AuthService,
     public db: AngularFireDatabase,
@@ -33,9 +33,25 @@ export class AppComponent implements OnInit {
     this.auth.getAuthState().subscribe(
       (user) =>{this.user = user}   
     );
-    this.locations = this.locationDB.get();
- 
+    this.locations = this.locationDB.get(); 
     
   }
 
+  add(tempName: string, tempAddress: string,tempCity: string, tempState: string) {
+      this.tempLocations = {
+        name: tempName,
+        address: tempAddress,
+        city: tempCity,
+        state: tempState
+      }
+      console.log(this.tempLocations);
+      this.locations.push(this.tempLocations);
+      console.log(this.locations);
+  }
+
+  remove(location: string) {
+    this.locations.remove(location);
+  }
 }
+
+
