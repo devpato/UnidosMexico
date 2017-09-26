@@ -16,6 +16,14 @@ export class AppComponent implements OnInit {
   tempLocations : any
   userUid : string
   tempUser : any 
+  nameValue : string = ""
+  addressValue : string = ""  
+  cityValue : string = ""
+  stateValue : string = ""
+  needsValue : string = "";
+  postion : any
+  flag = false;
+
   constructor(
     private auth: AuthService,
     public db: AngularFireDatabase,
@@ -42,22 +50,49 @@ export class AppComponent implements OnInit {
     this.locations = this.locationDB.get(); 
   }
 
-  add(tempName: string, tempAddress: string,tempCity: string, tempState: string) {
+  add(tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string) {
     this.userUid = this.auth.userUID();
     this.tempLocations = {
         name: tempName,
         address: tempAddress,
         city: tempCity,
         state: tempState,
+        needs: tempNeeds,
         uid: this.userUid
-      }
-      console.log(this.tempLocations);
+      }     
       this.locations.push(this.tempLocations);
-      console.log(this.locations);
+      if(this.flag == true) {
+        this.remove(this.postion);
+        this.flag = false;
+      }
+      this.clearFields()
   }
 
   remove(location: string) {
     this.locations.remove(location);
+  }
+
+  clearFields() {
+    this.nameValue = ""
+    this.addressValue = ""  
+    this.cityValue = ""
+    this.stateValue = ""
+    this.needsValue = "";
+  }
+
+  getPosition(tempPostion: string) {
+    return tempPostion;
+  }
+
+  update(location: string, tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string, postion: string) {
+    this.nameValue = tempName;
+    this.addressValue = tempAddress;
+    this.cityValue = tempCity;
+    this.stateValue = tempState;
+    this.needsValue = tempNeeds; 
+    this.flag = true; 
+    this.postion  = postion;
+
   }
 }
 

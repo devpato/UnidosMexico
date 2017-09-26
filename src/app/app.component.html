@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-white fixed-top">
     <div class="container">
       <a class="navbar-brand" href="#">UNIDOS MEXICO</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,60 +6,93 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">INICIO
-              <span class="sr-only">(current)</span>
-            </a>
+          <li class="nav-item">
+              <a class="nav-link" href="#"><i class="fa fa-cogs" aria-hidden="true" ></i> HERRAMIENTAS</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">MAPA</a>
+            <a class="nav-link" href="#"><i class="fa fa-map-marker" aria-hidden="true"></i> MAPA</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">WIFI</a>
+            <a class="nav-link" href="#"><i class="fa fa-wifi" aria-hidden="true"></i> WIFI</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">BUSCAME</a>
-          </li>
+            <a class="nav-link" href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i> BUSCAME</a>
+          </li> 
           <li class="nav-item">
-              <a class="nav-link" href="#">DONACIONES</a>
-          </li>
-          <li>
+              <a class="nav-link" href="#"><i class="fa fa-usd" aria-hidden="true"></i> DONACIONES</a>
           </li>
           <li *ngIf="!isLoggedIn()" class="nav-item">
-              <a class="nav-link" href="#"  (click)="loginWithGoogle()">INICIAR SESION</a>
+              <a class="nav-link" href="#"  (click)="loginWithGoogle()"><i class="fa fa-unlock-alt" aria-hidden="true"></i> INICIAR SESION</a>
           </li>
           <li *ngIf="isLoggedIn()" class="nav-item">
-              <a class="nav-link" href="#" (click)="logout()">CERRAR SESSION</a>
+              <a class="nav-link" href="#" (click)="logout()"><i class="fa fa-lock" aria-hidden="true"></i> CERRAR SESSION</a>
+          </li>
+          <li *ngIf="isLoggedIn()" class="nav-item">
+              <a class="nav-link" href="#"  (click)="loginWithGoogle()"><i class="fa fa-user" aria-hidden="true"></i> {{user.displayName}}</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-<div *ngIf="user?.uid;else loginBox">
+<!--<div *ngIf="user?.uid;else loginBox">
   <div style="text-align:center">
     <h1>
       Welcome to {{user.displayName}}
     </h1> 
   </div>
   <button class="btn btn-info" (click)="logout()">Logout</button>
-</div>
-
-<div *ngIf="isLoggedIn()">
-  <ul>
-    <label><b>Locations</b></label>
-    <li class="text" *ngFor="let location of locations | async; let i = index">
-        Nombre del Albergue: {{location.name}} | Direccion: {{location.address}} |  Ciudad: {{location.city}} | Estado: {{location.state}}
-        <div *ngIf="userUID() == location.uid" #userUid>
-          <p (click)="remove(location)">[X]</p>
-        </div>
-    </li>
-  </ul>
-  <h3>Add new Locations:</h3>
-  Nombre de albergue: <input type="text" #name/>
-  Direccion: <input type="text" #address/>
-  Ciudad: <input type="text"  #city/>
-  Estado: <input type="text"  #state/>
-  <input type="button" class="btn btn-primary" (click)="add(name.value,address.value,city.value,state.value)" value="Agregar"/>
+</div>-->
+<table class="table table-hover">
+    <thead>
+      <tr class="bg-dark">
+        <th  class="text-white">#</th>
+        <th  class="text-white">Nombre Albergue</th>
+        <th  class="text-white">Direccion</th>
+        <th  class="text-white">Ciudad</th>
+        <th  class="text-white">Estado</th>
+        <th  class="text-white">Necistamos</th>
+        <th  class="text-white" *ngIf="isLoggedIn()"> Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let location of locations | async; let i = index" class="rowTable">
+        <th scope="row">{{i}}</th>
+        <td #nameTemp  >{{location.name}}</td>
+        <td #addressTemp>{{location.address}}</td>
+        <td #cityTemp>{{location.city}}</td>
+        <td #stateTemp>{{location.state}}</td>
+        <td #needsTemp>{{location.needs}}</td>
+        <td *ngIf="isLoggedIn()"><i *ngIf="userUID() == location.uid" class="fa fa-minus-circle fa-lg text-danger removeLocations" aria-hidden="true" (click)="remove(location)"></i>
+          <i *ngIf="userUID() == location.uid" class="fa fa-pencil-square-o fa-lg text-warning removeLocations" aria-hidden="true"
+           (click)="update(location,location.name,location.address,location.city,location.state,location.needs, location)"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+<div *ngIf="isLoggedIn()" class="row albergueBig">
+  <div class="col-sm-2">
+    <p>Nombre de albergue:</p>
+    <input class="albergueInfo" type="text" #name [value]="nameValue" (input)="nameValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-2">  
+      <p>Direccion:</p>
+      <input class="albergueInfo" type="text" #address [value]="addressValue" (input)="addressValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-2">
+      <p>Ciudad:</p>
+      <input class="albergueInfo" type="text"  #city [value]="cityValue" (input)="cityValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-2">
+      <p>Estado:</p>
+      <input class="albergueInfo" type="text"  #state [value]="stateValue" (input)="stateValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-2">
+      <p>Necesitamos:</p>
+      <textarea class="albergueInfo needsInfo" type="text"  #needs [value]="needsValue" (input)="needsValue=$event.target.value"> </textarea>
+  </div>
+  <div class="col-sm-2">
+    <input type="button" class="btn btn-primary albergueInfo btnInfo" (click)="add(name.value,address.value,city.value,state.value,needs.value)" value="Agregar"/>
+  </div>
 </div>
 
 <!--<ng-template #loginBox>
@@ -68,3 +101,4 @@
   </div>
   <button (click)="loginWithGoogle()">Login with Google</button>
 </ng-template> -->
+

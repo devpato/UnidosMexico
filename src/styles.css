@@ -1,1 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+nav {
+    box-shadow: 2px 2px 5px grey !important;    
+}
+
+table {
+    margin-top: 5%;
+}
+
+.removeLocations{
+    cursor: pointer;
+}
+
+.albergueInfo {
+    height: 35px;
+    vertical-align:bottom;
+    width: 200px ;
+}
+
+.btnInfo  {
+    vertical-align:bottom;
+    height: 35px !important;
+    width: 150px !important;
+    margin-top: 40px !important;
+}
+
+.albergueBig {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.rowTable{
+    cursor: pointer;
+}
