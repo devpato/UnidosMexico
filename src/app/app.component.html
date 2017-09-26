@@ -5,18 +5,20 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto dropdown">
           <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fa fa-cogs" aria-hidden="true" ></i> HERRAMIENTAS</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-map-marker" aria-hidden="true"></i> MAPA</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-wifi" aria-hidden="true"></i> WIFI</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i> BUSCAME</a>
+              <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"><i class="fa fa-cogs" aria-hidden="true" ></i> HERRAMIENTAS <span class="caret"></span> </a>
+              <ul class="dropdown-menu">
+                  <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="fa fa-map-marker" aria-hidden="true"></i> MAPA</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="fa fa-wifi" aria-hidden="true"></i> WIFI</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="fa fa-user-circle-o" aria-hidden="true"></i> BUSCAME</a>
+                    </li>
+              </ul>
           </li> 
           <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-usd" aria-hidden="true"></i> DONACIONES</a>
@@ -24,11 +26,13 @@
           <li *ngIf="!isLoggedIn()" class="nav-item">
               <a class="nav-link" href="#"  (click)="loginWithGoogle()"><i class="fa fa-unlock-alt" aria-hidden="true"></i> INICIAR SESION</a>
           </li>
-          <li *ngIf="isLoggedIn()" class="nav-item">
-              <a class="nav-link" href="#" (click)="logout()"><i class="fa fa-lock" aria-hidden="true"></i> CERRAR SESSION</a>
-          </li>
-          <li *ngIf="isLoggedIn()" class="nav-item">
-              <a class="nav-link" href="#"  (click)="loginWithGoogle()"><i class="fa fa-user" aria-hidden="true"></i> {{user.displayName}}</a>
+          <li *ngIf="isLoggedIn()" class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle"  data-toggle="dropdown" href="#" ><i class="fa fa-user" aria-hidden="true"></i> {{user.displayName}}</a>
+              <ul class="dropdown-menu">
+                  <li *ngIf="isLoggedIn()" class="nav-item">
+                      <a class="nav-link" href="#" (click)="logout()"><i class="fa fa-lock" aria-hidden="true"></i> CERRAR SESSION</a>
+                  </li>
+              </ul>
           </li>
         </ul>
       </div>
@@ -50,7 +54,7 @@
         <th  class="text-white">Direccion</th>
         <th  class="text-white">Ciudad</th>
         <th  class="text-white">Estado</th>
-        <th  class="text-white">Necistamos</th>
+        <th  class="text-white">Necesitamos</th>
         <th  class="text-white" *ngIf="isLoggedIn()"> Acciones</th>
       </tr>
     </thead>
