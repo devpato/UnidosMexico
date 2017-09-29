@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { AuthService } from './shared/auth.service';
 import { LocationsService } from './shared/locations.service';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import * as firebase from 'firebase/app';
+import {MapsAPILoader} from '@agm/core';
+import {} from '@types/googlemaps';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -23,12 +25,18 @@ export class AppComponent implements OnInit {
   needsValue : string = "";
   postion : any
   flag = false;
-
+  
+  
+  @ViewChild('address') private searchElement: ElementRef;
   constructor(
     private auth: AuthService,
     public db: AngularFireDatabase,
-    private locationDB: LocationsService) { }
-
+    private locationDB: LocationsService,
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone,) { 
+        
+       
+     }
   loginWithGoogle() {
     this.auth.loginWithGoogle();
   }
@@ -47,7 +55,30 @@ export class AppComponent implements OnInit {
     this.auth.getAuthState().subscribe(
       (user) =>{this.user = user}   
     );
-    this.locations = this.locationDB.get(); 
+    this.locations = this.locationDB.get();
+    
+  }
+
+  ngAfterViewInit() {
+    this.autocompleteSearch();
+  }
+
+  autocompleteSearch() {
+        this.mapsAPILoader.load().then(
+      () => {        
+         let autocomplete = new google.maps.places.Autocomplete(this.searchElement.nativeElement, {types:["address"]});
+ 
+         autocomplete.addListener("place_changed", ()=>{
+           this.ngZone.run(()=>{
+             let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+ 
+             if(place.geometry === undefined || place.geometry === null) {
+               return;
+             }
+           })
+         })
+      }      
+     );
   }
 
   add(tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string) {

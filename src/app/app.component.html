@@ -46,6 +46,49 @@
   </div>
   <button class="btn btn-info" (click)="logout()">Logout</button>
 </div>-->
+<div [hidden]="!isLoggedIn()" class="row albergueBig">
+  <select class="col-sm-1 albergueInfo" id="selectType">
+      <option>Albergue</option>
+      <option>Necesitamos</option>
+      <option>Cruz Roja</option>
+      <option>Sismo</option>
+      <option>Huracan</option>
+      <option>Centro de Acopio</option>
+      <option>Hospitales Gratuitos</option>
+      <option>Asesorias Gratuitas</option>
+  </select>
+  <div class="col-sm-2 albergueSmall">
+    <p>Nombre:</p>
+    <input class="albergueInfo" type="text" #name [value]="nameValue" (input)="nameValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-2 albergueSmall">  
+      <p>Direccion:</p>
+      <input [hidden]="!isLoggedIn()" class="albergueInfo" type="text" autocorrect="off" autocapitalized="off" 
+      spellcheck="off"
+      #address [value]="addressValue" (input)="addressValue=$event.target.value"/>
+
+  </div>
+  <div class="col-sm-2 albergueSmall">
+      <p>Ciudad:</p>
+      <input class="albergueInfo" type="text"  #city [value]="cityValue" (input)="cityValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-1 albergueSmall">
+      <p>Estado:</p>
+      <input class="albergueInfo" type="text"  #state [value]="stateValue" (input)="stateValue=$event.target.value"/>
+  </div>
+  <div class="col-sm-2 albergueSmall">
+      <p>Necesitamos:</p>
+      <textarea class="albergueInfo needsInfo" type="text"  #needs [value]="needsValue" (input)="needsValue=$event.target.value"> </textarea>
+  </div>
+  <div class="col-sm-1">
+    <input type="button" class="btn btn-primary albergueInfo btnInfo" (click)="add(name.value,address.value,city.value,state.value,needs.value)" value="Agregar"/>
+  </div>
+</div>
+
+<div class="col-sm-12">
+  <div id="map" style="color: white !important; "></div>
+</div>
+
 <table class="table table-hover">
     <thead>
       <tr class="bg-dark">
@@ -73,33 +116,18 @@
       </tr>
     </tbody>
   </table>
-<div *ngIf="isLoggedIn()" class="row albergueBig">
-  <div class="col-sm-2">
-    <p>Nombre de albergue:</p>
-    <input class="albergueInfo" type="text" #name [value]="nameValue" (input)="nameValue=$event.target.value"/>
-  </div>
-  <div class="col-sm-2">  
-      <p>Direccion:</p>
-      <input class="albergueInfo" type="text" #address [value]="addressValue" (input)="addressValue=$event.target.value"/>
-  </div>
-  <div class="col-sm-2">
-      <p>Ciudad:</p>
-      <input class="albergueInfo" type="text"  #city [value]="cityValue" (input)="cityValue=$event.target.value"/>
-  </div>
-  <div class="col-sm-2">
-      <p>Estado:</p>
-      <input class="albergueInfo" type="text"  #state [value]="stateValue" (input)="stateValue=$event.target.value"/>
-  </div>
-  <div class="col-sm-2">
-      <p>Necesitamos:</p>
-      <textarea class="albergueInfo needsInfo" type="text"  #needs [value]="needsValue" (input)="needsValue=$event.target.value"> </textarea>
-  </div>
-  <div class="col-sm-2">
-    <input type="button" class="btn btn-primary albergueInfo btnInfo" (click)="add(name.value,address.value,city.value,state.value,needs.value)" value="Agregar"/>
-  </div>
+
+<div class="col-sm-12">
+  <div id="map" style="color: white !important; "></div>
 </div>
 
-<!--<ng-template #loginBox>
+ <!--<input [hidden]="!isLoggedIn()"  type="text" placeholder="Search for Location" 
+  autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
+  [value]="addressValue" (input)="addressValue=$event.target.value">
+
+
+
+<ng-template #loginBox>
   <div>
     <h1>Login to {{title}}</h1>
   </div>
