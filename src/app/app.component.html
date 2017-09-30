@@ -38,14 +38,18 @@
       </div>
     </div>
   </nav>
-<!--<div *ngIf="user?.uid;else loginBox">
-  <div style="text-align:center">
-    <h1>
-      Welcome to {{user.displayName}}
-    </h1> 
+<h1>MAP</h1>
+<agm-map  [latitude]="19.432608" [longitude]="-99.133209" [zoom]="zoom" style="height: 400px !important;">
+  <div  *ngFor="let location of locations | async;let i = index">
+    <agm-marker
+     [latitude]="location.lat"
+     [longitude]="location.long">
+     <agm-info-window>
+        <strong>{{location.name}}</strong>
+      </agm-info-window>
+    </agm-marker>    
   </div>
-  <button class="btn btn-info" (click)="logout()">Logout</button>
-</div>-->
+</agm-map>
 <div [hidden]="!isLoggedIn()" class="row albergueBig">
   <select class="col-sm-1 albergueInfo" id="selectType">
       <option>Albergue</option>
@@ -61,27 +65,19 @@
     <p>Nombre:</p>
     <input class="albergueInfo" type="text" #name [value]="nameValue" (input)="nameValue=$event.target.value"/>
   </div>
-  <div class="col-sm-2 albergueSmall">  
-      <p>Direccion:</p>
+  <div class="col-sm-4 albergueSmall">  
+      <p>Dirección:</p>
       <input [hidden]="!isLoggedIn()" class="albergueInfo" type="text" autocorrect="off" autocapitalized="off" 
       spellcheck="off"
       #address [value]="addressValue" (input)="addressValue=$event.target.value"/>
 
   </div>
   <div class="col-sm-2 albergueSmall">
-      <p>Ciudad:</p>
-      <input class="albergueInfo" type="text"  #city [value]="cityValue" (input)="cityValue=$event.target.value"/>
-  </div>
-  <div class="col-sm-1 albergueSmall">
-      <p>Estado:</p>
-      <input class="albergueInfo" type="text"  #state [value]="stateValue" (input)="stateValue=$event.target.value"/>
-  </div>
-  <div class="col-sm-2 albergueSmall">
       <p>Necesitamos:</p>
       <textarea class="albergueInfo needsInfo" type="text"  #needs [value]="needsValue" (input)="needsValue=$event.target.value"> </textarea>
   </div>
   <div class="col-sm-1">
-    <input type="button" class="btn btn-primary albergueInfo btnInfo" (click)="add(name.value,address.value,city.value,state.value,needs.value)" value="Agregar"/>
+    <input type="button" class="btn btn-primary albergueInfo btnInfo" (click)="add(name.value,address.value,needs.value)" value="Agregar"/>
   </div>
 </div>
 
@@ -112,25 +108,3 @@
       </tr>
     </tbody>
   </table>
-
-
-  <div class="col-sm-12">
-    <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
-      <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
-    </agm-map>
-  </div>
-  
-
- <!--<input [hidden]="!isLoggedIn()"  type="text" placeholder="Search for Location" 
-  autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control" #search
-  [value]="addressValue" (input)="addressValue=$event.target.value">
-
-
-
-<ng-template #loginBox>
-  <div>
-    <h1>Login to {{title}}</h1>
-  </div>
-  <button (click)="loginWithGoogle()">Login with Google</button>
-</ng-template> -->
-

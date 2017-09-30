@@ -10,6 +10,7 @@ import {} from '@types/googlemaps';
   styles: [`
   agm-map {
     height: 300px;
+    width: 100%;
   }
 `],
   templateUrl: './app.component.html',
@@ -28,19 +29,26 @@ export class AppComponent implements OnInit {
   cityValue : string = ""
   stateValue : string = ""
   needsValue : string = "";
-  lat : number;
-  lng : number;
+  lat : number = 19.432608;
+  lng : number = -99.133209;
   postion : any
   flag = false;
+  zoom : number = 8;
   
   
   @ViewChild('address') private searchElement: ElementRef;
+
   constructor(
     private auth: AuthService,
     public db: AngularFireDatabase,
     private locationDB: LocationsService,
     private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone,) { }
+
+   /* markerClicked(marker: marker, index: number) {
+
+    }*/
+
   loginWithGoogle() {
     this.auth.loginWithGoogle();
   }
@@ -60,6 +68,7 @@ export class AppComponent implements OnInit {
       (user) =>{this.user = user}   
     );
     this.locations = this.locationDB.get();
+    console.log(this.locations);
   }
 
   ngAfterViewInit() {
@@ -88,19 +97,28 @@ export class AppComponent implements OnInit {
      console.log(this.lat, this.lng)
   }
 
-  add(tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string) {
+  /*setCurrentPosition() {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+        this.zoom = 6;
+      });
+    }
+  }*/
+
+  add(tempName: string, tempAddress: string,tempNeeds: string) {
     this.userUid = this.auth.userUID(); 
     this.tempLocations = {
         name: tempName,
         address: tempAddress,
-        city: tempCity,
-        state: tempState,
         needs: tempNeeds,
         uid: this.userUid,
         lat: this.lat,
         long: this.lng
       }     
       this.locations.push(this.tempLocations);
+      console.log("prueba: " + this.lat)
       if(this.flag == true) {
         this.remove(this.postion);
         this.flag = false;
@@ -108,7 +126,6 @@ export class AppComponent implements OnInit {
       this.clearFields()
   }
 
-  
   remove(location: string) {
     this.locations.remove(location);
   }
@@ -127,11 +144,9 @@ export class AppComponent implements OnInit {
     return tempPostion;
   }
 
-  update(location: string, tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string, postion: string) {
+  update(location: string, tempName: string, tempAddress: string, tempNeeds: string, postion: string) {
     this.nameValue = tempName;
     this.addressValue = tempAddress;
-    this.cityValue = tempCity;
-    this.stateValue = tempState;
     this.needsValue = tempNeeds; 
     this.flag = true; 
     this.postion  = postion;
