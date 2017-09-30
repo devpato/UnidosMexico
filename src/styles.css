@@ -43,3 +43,9 @@ table, td, tr, th {
 #selectType{
     margin-top: 0px !important;
 }
+.markerWindow{
+    cursor: pointer;
+    color: red;
+    font-weight: bold; 
+    text-align: center;
+}

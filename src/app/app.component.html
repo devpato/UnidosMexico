@@ -45,8 +45,9 @@
      [latitude]="location.lat"
      [longitude]="location.long">
      <agm-info-window>
-        <strong>{{location.name}}</strong>
-      </agm-info-window>
+        <strong><p>{{location.name}}</p></strong>
+       <p (click)="information(location)" data-toggle="modal" data-target="#myModal" class="markerWindow"text-center>VER INFO</p>
+    </agm-info-window>
     </agm-marker>    
   </div>
 </agm-map>
@@ -86,11 +87,11 @@
   </div>
 </div>
 
-<table class="table table-hover">
+<table class="table table-hover table-bordered">
     <thead>
       <tr class="bg-dark">
         <th  class="text-white">Nombre</th>
-        <th  class="text-white">Direccion</th>
+        <th  class="text-white">Dirección</th>
         <th  class="text-white">Necesitamos</th>
         <th  class="text-white" *ngIf="isLoggedIn()"> Acciones</th>
       </tr>
@@ -99,11 +100,57 @@
       <tr *ngFor="let location of locations | async; let i = index" class="rowTable">
         <td #nameTemp  >{{location.name}}</td>
         <td #addressTemp>{{location.address}}</td>
-        <td #needsTemp>{{location.needs}}</td>
+        <td #needsTemp  (click)="information(location)" data-toggle="modal" data-target="#myModal">
+            Ver Info
+        </td>
         <td *ngIf="isLoggedIn()"><i *ngIf="userUID() == location.uid" class="fa fa-minus-circle fa-lg text-danger removeLocations" aria-hidden="true" (click)="remove(location)"></i>
           <i *ngIf="userUID() == location.uid" class="fa fa-pencil-square-o fa-lg text-warning removeLocations" aria-hidden="true"
            (click)="update(location,location.name,location.address,location.needs,location.uid, location.lat, location.long, location.id, location)"></i>
         </td>
-      </tr>
+      </tr>  
     </tbody>
-  </table>
+  </table>  
+  <!-- Modal -->
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+            <i class="fa fa-hospital-o" aria-hidden="true" text-success></i>
+          <h4 class="modal-title" [innerHtml]="modalName"></h4>
+        </div>
+        <div class="modal-body">
+            <h4>Dirección</h4>
+            <div [innerHtml]="modalAddress">
+            </div>
+          <div class="row">   
+            <div class="col-sm-6">
+              <h4>Necesitamos</h4>
+              <div [innerHtml]="modalNeeds">
+              </div> 
+            </div>
+            <div class="col-sm-6">
+              <h4>Hora y Fecha</h4>
+              <div>
+                <p>8:35AM 09/19/2017</p>
+              </div> 
+            </div>          
+          </div>
+        </div>  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Eliminar</button>
+          </div>
+      </div>
+  
+    </div>
+  </div>
+<div id="modalInfo" >
+  
+</div>
+<script> 
+$('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus()
+})
+</script>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Renderer } from '@angular/core';
 import { AuthService } from './shared/auth.service';
 import { LocationsService } from './shared/locations.service';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
@@ -35,6 +35,10 @@ export class AppComponent implements OnInit {
   flag = false;
   zoom : number = 6;
   idValue : string = "";
+  infoLocation : any;
+  modalName : string = "";
+  modalAddress : string = "";
+  modalNeeds : string = "";
   
   
   @ViewChild('address') private searchElement: ElementRef;
@@ -44,7 +48,8 @@ export class AppComponent implements OnInit {
     public db: AngularFireDatabase,
     private locationDB: LocationsService,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,) { }
+    private ngZone: NgZone,
+    private renderer:Renderer) { }
 
    /* markerClicked(marker: marker, index: number) {
 
@@ -98,16 +103,6 @@ export class AppComponent implements OnInit {
      console.log(this.lat, this.lng)
   }
 
-  /*setCurrentPosition() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.lat = position.coords.latitude;
-        this.lng = position.coords.longitude;
-        this.zoom = 6;
-      });
-    }
-  }*/
-
   add(tempName: string, tempAddress: string,tempNeeds: string) {
     this.userUid = this.auth.userUID(); 
     this.tempLocations = {
@@ -124,6 +119,7 @@ export class AppComponent implements OnInit {
         this.remove(this.postion);
         this.flag = false;
       }
+      this.infoLocation = this.tempLocations;
       this.clearFields()
   }
 
@@ -156,6 +152,22 @@ export class AppComponent implements OnInit {
     this.flag = true;
     this.postion  = postion; 
   }
+  @ViewChild('modalInfo') private infoModal: ElementRef;
+  information(info) {
+    this.infoLocation = {
+      name: info.name,
+      address: info.address,
+      needs: info.needs,
+      uid: info.userUid,
+      lat: info.lat,
+      long: info.lng,
+      id: info.lat+""+info.lng
+    }     
+    this.modalName = '<p">'+info.name+'</p>';
+    this.modalAddress = '<p">'+info.address+'</p>';
+    this.modalNeeds = '<p">'+info.needs+'</p>';
+  }
+
 }
 
 
