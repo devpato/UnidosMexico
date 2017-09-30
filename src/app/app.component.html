@@ -38,8 +38,8 @@
       </div>
     </div>
   </nav>
-<h1>MAP</h1>
-<agm-map  [latitude]="19.432608" [longitude]="-99.133209" [zoom]="zoom" style="height: 400px !important;">
+
+<agm-map  [latitude]="19.432608" [longitude]="-99.133209" [zoom]="zoom" style="height: 50vh !important;">
   <div  *ngFor="let location of locations | async;let i = index">
     <agm-marker
      [latitude]="location.lat"
@@ -50,8 +50,9 @@
     </agm-marker>    
   </div>
 </agm-map>
+
 <div [hidden]="!isLoggedIn()" class="row albergueBig">
-  <select class="col-sm-1 albergueInfo" id="selectType">
+  <select class="col-sm-1 albergueInfo albergueSmall" id="selectType" #type [value]="typeValue" (input)="typeValue=$event.target.value">
       <option>Albergue</option>
       <option>Necesitamos</option>
       <option>Cruz Roja</option>
@@ -69,6 +70,7 @@
       <p>Dirección:</p>
       <input [hidden]="!isLoggedIn()" class="albergueInfo" type="text" autocorrect="off" autocapitalized="off" 
       spellcheck="off"
+      placeholder=""
       #address [value]="addressValue" (input)="addressValue=$event.target.value"/>
 
   </div>
@@ -84,22 +86,16 @@
 <table class="table table-hover">
     <thead>
       <tr class="bg-dark">
-        <th  class="text-white">#</th>
-        <th  class="text-white">Nombre Albergue</th>
+        <th  class="text-white">Nombre</th>
         <th  class="text-white">Direccion</th>
-        <th  class="text-white">Ciudad</th>
-        <th  class="text-white">Estado</th>
         <th  class="text-white">Necesitamos</th>
         <th  class="text-white" *ngIf="isLoggedIn()"> Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let location of locations | async; let i = index" class="rowTable">
-        <th scope="row">{{i}}</th>
         <td #nameTemp  >{{location.name}}</td>
         <td #addressTemp>{{location.address}}</td>
-        <td #cityTemp>{{location.city}}</td>
-        <td #stateTemp>{{location.state}}</td>
         <td #needsTemp>{{location.needs}}</td>
         <td *ngIf="isLoggedIn()"><i *ngIf="userUID() == location.uid" class="fa fa-minus-circle fa-lg text-danger removeLocations" aria-hidden="true" (click)="remove(location)"></i>
           <i *ngIf="userUID() == location.uid" class="fa fa-pencil-square-o fa-lg text-warning removeLocations" aria-hidden="true"

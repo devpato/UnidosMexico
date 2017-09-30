@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   lng : number = -99.133209;
   postion : any
   flag = false;
-  zoom : number = 8;
+  zoom : number = 6;
   
   
   @ViewChild('address') private searchElement: ElementRef;
