@@ -7,6 +7,11 @@ import {MapsAPILoader} from '@agm/core';
 import {} from '@types/googlemaps';
 @Component({
   selector: 'app-root',
+  styles: [`
+  agm-map {
+    height: 300px;
+  }
+`],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -23,8 +28,8 @@ export class AppComponent implements OnInit {
   cityValue : string = ""
   stateValue : string = ""
   needsValue : string = "";
-  latValue : any = "";
-  longValue : any = "";
+  lat : number;
+  lng : number;
   postion : any
   flag = false;
   
@@ -73,45 +78,18 @@ export class AppComponent implements OnInit {
              if(place.geometry === undefined || place.geometry === null) {
                return;
              }
+             this.lat = place.geometry.location.lat();
+             this.lng = place.geometry.location.lng();
+
            })
          })
       }      
      );
-  }
-
-showResult(result) {
- console.log("results: " + result.geometry.location.lat() + " " + result.geometry.location.lng());
- //this.latValue = result.geometry.location.lat();
-}
-
-getLatitudeLongitude(callback, address) {
-    let geocoder = new google.maps.Geocoder();
-    if (geocoder) {
-        geocoder.geocode({
-            'address': address
-        }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-                callback(results[0]);
-            }
-        });
-    }
-}
-  getLongitude(address:string) {
-    if(address != "") {
-      let geocoder = new google.maps.Geocoder();
-      geocoder.geocode( { 'address': address}, function(results, status) {        
-          if (status == google.maps.GeocoderStatus.OK) {
-            console.log(results[0].geometry.location.lat());
-            console.log(results[0].geometry.location.lng());
-          } 
-        }); 
-    }
+     console.log(this.lat, this.lng)
   }
 
   add(tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string) {
     this.userUid = this.auth.userUID(); 
-
-    console.log("test " + this.getLatitudeLongitude(this.showResult, tempAddress));
     this.tempLocations = {
         name: tempName,
         address: tempAddress,
@@ -119,8 +97,8 @@ getLatitudeLongitude(callback, address) {
         state: tempState,
         needs: tempNeeds,
         uid: this.userUid,
-        lat: this.latValue,
-        long: this.longValue
+        lat: this.lat,
+        long: this.lng
       }     
       this.locations.push(this.tempLocations);
       if(this.flag == true) {
@@ -141,8 +119,8 @@ getLatitudeLongitude(callback, address) {
     this.cityValue = ""
     this.stateValue = ""
     this.needsValue = "";
-    /*this.latValue = "";
-    this.longValue = "";*/
+    this.lng = 0;
+    this.lat = 0;
   }
 
   getPosition(tempPostion: string) {
