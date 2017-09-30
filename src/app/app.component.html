@@ -52,16 +52,19 @@
 </agm-map>
 
 <div [hidden]="!isLoggedIn()" class="row albergueBig">
-  <select class="col-sm-1 albergueInfo albergueSmall" id="selectType" #type [value]="typeValue" (input)="typeValue=$event.target.value">
-      <option>Albergue</option>
-      <option>Necesitamos</option>
-      <option>Cruz Roja</option>
-      <option>Sismo</option>
-      <option>Huracan</option>
-      <option>Centro de Acopio</option>
-      <option>Hospitales Gratuitos</option>
-      <option>Asesorias Gratuitas</option>
-  </select>
+  <div class="col-sm-2">
+    <p>Tipo:</p>
+    <select class="albergueInfo " id="selectType" #type [value]="typeValue" (input)="typeValue=$event.target.value">
+        <option val="1">Albergue</option>
+        <option val="2">Necesitamos</option>
+        <option val="3">Cruz Roja</option>
+        <option val="4">Sismo</option>
+        <option val="5">Huracan</option>
+        <option val="6">Centro de Acopio</option>
+        <option val="7">Hospitales Gratuitos</option>
+        <option val="8">Asesorias Gratuitas</option>
+    </select>
+  </div>
   <div class="col-sm-2 albergueSmall">
     <p>Nombre:</p>
     <input class="albergueInfo" type="text" #name [value]="nameValue" (input)="nameValue=$event.target.value"/>
@@ -99,7 +102,7 @@
         <td #needsTemp>{{location.needs}}</td>
         <td *ngIf="isLoggedIn()"><i *ngIf="userUID() == location.uid" class="fa fa-minus-circle fa-lg text-danger removeLocations" aria-hidden="true" (click)="remove(location)"></i>
           <i *ngIf="userUID() == location.uid" class="fa fa-pencil-square-o fa-lg text-warning removeLocations" aria-hidden="true"
-           (click)="update(location,location.name,location.address,location.city,location.state,location.needs, location)"></i>
+           (click)="update(location,location.name,location.address,location.needs,location.uid, location.lat, location.long, location.id, location)"></i>
         </td>
       </tr>
     </tbody>

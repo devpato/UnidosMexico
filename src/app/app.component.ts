@@ -29,11 +29,12 @@ export class AppComponent implements OnInit {
   cityValue : string = ""
   stateValue : string = ""
   needsValue : string = "";
-  lat : number = 19.432608;
-  lng : number = -99.133209;
+  lat : number;
+  lng : number;
   postion : any
   flag = false;
   zoom : number = 6;
+  idValue : string = "";
   
   
   @ViewChild('address') private searchElement: ElementRef;
@@ -115,10 +116,10 @@ export class AppComponent implements OnInit {
         needs: tempNeeds,
         uid: this.userUid,
         lat: this.lat,
-        long: this.lng
+        long: this.lng,
+        id:this.lat+""+this.lng
       }     
       this.locations.push(this.tempLocations);
-      console.log("prueba: " + this.lat)
       if(this.flag == true) {
         this.remove(this.postion);
         this.flag = false;
@@ -144,13 +145,16 @@ export class AppComponent implements OnInit {
     return tempPostion;
   }
 
-  update(location: string, tempName: string, tempAddress: string, tempNeeds: string, postion: string) {
+  update(location: string, tempName: string, tempAddress: string, tempNeeds: string, tempUid: string, tempLat: number, tempLong: number, tempId:string, postion: string) {
     this.nameValue = tempName;
     this.addressValue = tempAddress;
     this.needsValue = tempNeeds; 
-    this.flag = true; 
-    this.postion  = postion;
-
+    this.userUid = tempUid;
+    this.lat = tempLat;
+    this.lng =tempLong;
+    this.idValue = tempId;
+    this.flag = true;
+    this.postion  = postion; 
   }
 }
 
