@@ -23,8 +23,8 @@
           <li class="nav-item">
               <a class="nav-link" href="#"><i class="fa fa-usd" aria-hidden="true"></i> DONACIONES</a>
           </li>
-          <li *ngIf="!isLoggedIn()" class="nav-item">
-              <a class="nav-link" href="#"  (click)="loginWithGoogle()"><i class="fa fa-unlock-alt" aria-hidden="true"></i> INICIAR SESION</a>
+          <li *ngIf="!isLoggedIn()" class="nav-item" (click)="loginWithGoogle()">
+              <a class="nav-link" href="#"  ><i class="fa fa-unlock-alt" aria-hidden="true"></i> INICIAR SESION</a>
           </li>
           <li *ngIf="isLoggedIn()" class="nav-item dropdown">
               <a class="nav-link dropdown-toggle"  data-toggle="dropdown" href="#" ><i class="fa fa-user" aria-hidden="true"></i> {{user.displayName}}</a>
@@ -86,7 +86,7 @@
 </div>
 
 <div class="col-sm-12">
-  <div id="map" style="color: white !important; "></div>
+  
 </div>
 
 <table class="table table-hover">

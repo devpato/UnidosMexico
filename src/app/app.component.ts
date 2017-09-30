@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
   cityValue : string = ""
   stateValue : string = ""
   needsValue : string = "";
+  latValue : any = "";
+  longValue : any = "";
   postion : any
   flag = false;
   
@@ -33,10 +35,7 @@ export class AppComponent implements OnInit {
     public db: AngularFireDatabase,
     private locationDB: LocationsService,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone,) { 
-        
-       
-     }
+    private ngZone: NgZone,) { }
   loginWithGoogle() {
     this.auth.loginWithGoogle();
   }
@@ -56,7 +55,6 @@ export class AppComponent implements OnInit {
       (user) =>{this.user = user}   
     );
     this.locations = this.locationDB.get();
-    
   }
 
   ngAfterViewInit() {
@@ -81,15 +79,48 @@ export class AppComponent implements OnInit {
      );
   }
 
+showResult(result) {
+ console.log("results: " + result.geometry.location.lat() + " " + result.geometry.location.lng());
+ //this.latValue = result.geometry.location.lat();
+}
+
+getLatitudeLongitude(callback, address) {
+    let geocoder = new google.maps.Geocoder();
+    if (geocoder) {
+        geocoder.geocode({
+            'address': address
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                callback(results[0]);
+            }
+        });
+    }
+}
+  getLongitude(address:string) {
+    if(address != "") {
+      let geocoder = new google.maps.Geocoder();
+      geocoder.geocode( { 'address': address}, function(results, status) {        
+          if (status == google.maps.GeocoderStatus.OK) {
+            console.log(results[0].geometry.location.lat());
+            console.log(results[0].geometry.location.lng());
+          } 
+        }); 
+    }
+  }
+
   add(tempName: string, tempAddress: string,tempCity: string, tempState: string, tempNeeds: string) {
-    this.userUid = this.auth.userUID();
+    this.userUid = this.auth.userUID(); 
+
+    console.log("test " + this.getLatitudeLongitude(this.showResult, tempAddress));
     this.tempLocations = {
         name: tempName,
         address: tempAddress,
         city: tempCity,
         state: tempState,
         needs: tempNeeds,
-        uid: this.userUid
+        uid: this.userUid,
+        lat: this.latValue,
+        long: this.longValue
       }     
       this.locations.push(this.tempLocations);
       if(this.flag == true) {
@@ -99,6 +130,7 @@ export class AppComponent implements OnInit {
       this.clearFields()
   }
 
+  
   remove(location: string) {
     this.locations.remove(location);
   }
@@ -109,6 +141,8 @@ export class AppComponent implements OnInit {
     this.cityValue = ""
     this.stateValue = ""
     this.needsValue = "";
+    /*this.latValue = "";
+    this.longValue = "";*/
   }
 
   getPosition(tempPostion: string) {
